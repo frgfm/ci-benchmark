@@ -30,3 +30,13 @@ jobs:
         uses: ponicode/dogstring-action@v0.1.3-beta
       - name: Ponicode Unit Test
         uses: ponicode/unit-testing-action@0.2.1
+
+  gh-actions:
+    name: GH Actions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Super-Linter
+        uses: github/super-linter@v4.9.7
