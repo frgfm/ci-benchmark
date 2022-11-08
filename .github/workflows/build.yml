@@ -1,4 +1,4 @@
-name: Build
+name: build
 on:
   push:
     branches:
@@ -7,7 +7,6 @@ on:
     types: [opened, synchronize, reopened]
 jobs:
   sonarcloud:
-    name: SonarCloud
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -58,8 +57,8 @@ jobs:
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
       - run: |
-        npm install -g ponicode
-        npm i --save-dev rewire @types/rewire jest@26 ts-jest@26 @types/jest
+          npm install -g ponicode
+          npm i --save-dev rewire @types/rewire jest@26 ts-jest@26 @types/jest
       # Identify which files are impacted by the Push / PR
       - id: get_changed_files
         uses: jitterbit/get-changed-files@v1
@@ -112,10 +111,9 @@ jobs:
           branch: ${{ steps.extract_branch.outputs.BRANCH_NAME }} # DO NOT MODIFY
           githubToken: ${{ secrets.GITHUB_TOKEN }} # DO NOT MODIFY
           ponicodeSquarToken: ${{ secrets.PONICODE_SQUAR_TOKEN }} # DO NOT MODIFY
-          displayFullReport: 'true' 
+          displayFullReport: 'true'
 
-  gh-actions:
-    name: GH Actions
+  super-linter:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
