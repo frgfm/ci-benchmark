@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dummy_lib"
+description = "Dummy Python library"
+authors = [
+    {name = "François-Guillaume Fernandez", email = "fg-feedback@protonmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.6,<4"
+license = {file = "LICENSE"}
+keywords = ["python", "hello world"]
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Topic :: Scientific/Engineering",
+]
+dynamic = ["version"]
+dependencies = [
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=5.3.2",
+    "coverage[toml]>=4.5.4",
+]
+dev = [
+    # test
+    "pytest>=5.3.2",
+    "coverage[toml]>=4.5.4",
+]
+
+[project.urls]
+repository = "https://github.com/frgfm/ci-benchmark"
+tracker = "https://github.com/frgfm/ci-benchmark/issues"
+
+[tool.setuptools]
+zip-safe = true
+
+[tool.setuptools.packages.find]
+exclude = ["docs*", "scripts*", "tests*"]
