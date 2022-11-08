@@ -1,4 +1,4 @@
-name: Build
+name: build
 on:
   push:
     branches:
@@ -7,7 +7,6 @@ on:
     types: [opened, synchronize, reopened]
 jobs:
   sonarcloud:
-    name: SonarCloud
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -112,10 +111,9 @@ jobs:
           branch: ${{ steps.extract_branch.outputs.BRANCH_NAME }} # DO NOT MODIFY
           githubToken: ${{ secrets.GITHUB_TOKEN }} # DO NOT MODIFY
           ponicodeSquarToken: ${{ secrets.PONICODE_SQUAR_TOKEN }} # DO NOT MODIFY
-          displayFullReport: 'true' 
+          displayFullReport: 'true'
 
-  gh-actions:
-    name: GH Actions
+  super-linter:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
