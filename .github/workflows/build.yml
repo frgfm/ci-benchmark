@@ -1,0 +1,125 @@
+name: Build
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+jobs:
+  sonarcloud:
+    name: SonarCloud
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  ponicode-docstring:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Get paths
+        run: |
+          git show --pretty="" --name-only ${{ github.sha }} > PATHS_TO_CHANGED_FILES.txt
+      - name: Ponicode DogString
+        uses: ponicode/dogstring-action@master
+        with:
+          repo_path: ./
+          auth_token: ${{ secrets.PONICODE_TOKEN }}
+          all_repo: False
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "[ponicode-pull-request] Ponicode wrote new docstrings!"
+          branch: ponicode-docstring
+          title: "[Ponicode] Docstrings created"
+          body: |
+            ## ⭐️ Ponicode report ⭐️
+            Ponicode found **undocumented functions** in your code, and auto-generated docstrings for you.
+            </br>
+            ### 🦄 We'd love to hear your feedback!🦄 
+            Send us an email at <feedback@ponicode.com>, open an issue on our Action, or join us on the [Ponicode Community Slack](https://ponicode-community.slack.com/join/shared_invite/zt-fiq4fhkg-DE~a_FkJ7xtiZxW7efyA4Q#/).
+            Visit **[ponicode.com](https://ponicode.com)** to find out more about what we do.
+            </br>
+            <img alt="Ponicode Logo" src="https://avatars0.githubusercontent.com/u/49948625?s=200&v=4=200zx" width="100"/>
+
+  ponicode-unittesting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - run: |
+        npm install -g ponicode
+        npm i --save-dev rewire @types/rewire jest@26 ts-jest@26 @types/jest
+      # Identify which files are impacted by the Push / PR
+      - id: get_changed_files
+        uses: jitterbit/get-changed-files@v1
+        continue-on-error: true
+        with:
+          format: 'json'
+      # Extract branch name
+      - id: extract_branch
+        if: github.event_name == 'pull_request'
+        run: echo "::set-output name=BRANCH_NAME::$(echo ${GITHUB_HEAD_REF})"
+      # Run Ponicode Unit Test Action
+      - uses: ponicode/unit-testing-action@master
+        with:
+          repoURL: ${{github.repository}} # DO NOT MODIFY
+          branch: ${{ steps.extract_branch.outputs.BRANCH_NAME }} # DO NOT MODIFY
+          githubToken: ${{ secrets.GITHUB_TOKEN }} # DO NOT MODIFY
+          ponicodeUtToken: ${{ secrets.PONICODE_TOKEN }} # DO NOT MODIFY
+          impactedFiles: ${{ steps.get_changed_files.outputs.added_modified }} # DO NOT MODIFY IF YOU WANT TO GENERATE TESTS ON PR IMPACTED FILES ONLY
+          commentUTs: "false"
+
+  ponicode-squar:
+    runs-on: ubuntu-latest
+    env:
+      SQUAR_API_URL: "https://ponicode-glados-prod.azurewebsites.net"
+      FETCH_REPORT_RETRY_MILLISEC: 5000
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - run: |
+          npm install -g ponicode
+      # Identify which files are impacted by the Push / PR
+      - id: get_changed_files
+        uses: jitterbit/get-changed-files@v1
+        continue-on-error: true
+        with:
+          format: 'json'
+
+      # Extract branch name
+      - id: extract_branch
+        if: github.event_name == 'pull_request'
+        run: echo "::set-output name=BRANCH_NAME::$(echo ${GITHUB_HEAD_REF})"
+      
+      # Run Ponicode SQUAR action
+      - uses: ponicode/squar_action@master
+        id: ponicode_squar
+        with:
+          repoURL: ${{github.repository}} # DO NOT MODIFY
+          impactedFiles: ${{ steps.get_changed_files.outputs.added_modified }} # DO NOT MODIFY
+          branch: ${{ steps.extract_branch.outputs.BRANCH_NAME }} # DO NOT MODIFY
+          githubToken: ${{ secrets.GITHUB_TOKEN }} # DO NOT MODIFY
+          ponicodeSquarToken: ${{ secrets.PONICODE_SQUAR_TOKEN }} # DO NOT MODIFY
+          displayFullReport: 'true' 
+
+  gh-actions:
+    name: GH Actions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Super-Linter
+        uses: github/super-linter@v4.9.7
