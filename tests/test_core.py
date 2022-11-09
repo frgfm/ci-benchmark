@@ -10,6 +10,5 @@ from dummy_lib.core import greet_contributor
         ["Linus", "Hello Linus! Nice to meet you."],
     ],
 )
-@pytest.mark.parametrize
 def test_greet_contributor(name, expected_output):
     assert greet_contributor(name) == expected_output
