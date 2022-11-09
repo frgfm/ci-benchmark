@@ -11,4 +11,11 @@ from dummy_lib.core import greet_contributor
     ],
 )
 def test_greet_contributor(name, expected_output):
+    """
+    Test greet contributor.
+
+    Args:
+        name: write your description
+        expected_output: write your description
+    """
     assert greet_contributor(name) == expected_output
