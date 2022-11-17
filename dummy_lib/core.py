@@ -25,9 +25,6 @@ def feature_a(input_temperatures: List[float]) -> List[float]:
 		the temperatures converted to Celsius
 	"""
 
-	tmp = []
-	for fahrenheit_temp in input_temperatures:
-		celsius_temp = (fahrenheit_temp - 32) * 5 / 9
-		tmp.append(celsius_temp)
-
-	return tmp
+	return [
+		(fahrenheit_temp - 32) * 5 / 9 for fahrenheit_temp in input_temperatures
+	]
