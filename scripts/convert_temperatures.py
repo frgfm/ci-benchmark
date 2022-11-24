@@ -1,9 +1,6 @@
 # Copyright (C) 2022, François-Guillaume Fernandez.
-
 # This program is licensed under the Apache License 2.0.
 # See LICENSE or go to <https://www.apache.org/licenses/LICENSE-2.0> for full license details.
-
-
 import argparse
 
 from dummy_lib import convert_fahrenheit_to_celsius
