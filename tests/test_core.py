@@ -1,6 +1,6 @@
 import pytest
 
-from dummy_lib.core import greet_contributor, convert_fahrenheit_to_celsius
+from dummy_lib.core import greet_contributor, convert_temperature_sequences, TemperatureScale
 
 
 @pytest.mark.parametrize(
@@ -15,11 +15,29 @@ def test_greet_contributor(name, expected_output):
 
 
 @pytest.mark.parametrize(
-    "input_temperatures, expected_output",
+    "input_temperatures, input_scale, output_scale, error_type, expected_output",
     [
-        [[], []],
-        [[50, 14., 32], [10, -10., 0]],
+        [[], None, None, None, []],
+        # Fahrenheit to Celsius
+        [[50, 14., 32], None, None, None, [10, -10., 0]],
+        [[50, 14., 32], TemperatureScale.FAHRENHEIT, TemperatureScale.CELSIUS, None, [10, -10., 0]],
+        # Celsius to Fahrenheit
+        [[10, -10., 0], TemperatureScale.CELSIUS, TemperatureScale.FAHRENHEIT, None, [50, 14., 32]],
+        # Same scale
+        [[10, -10., 0], TemperatureScale.CELSIUS, TemperatureScale.CELSIUS, None, [10, -10., 0]],
+        # Error
+        [[10, -10., 0], TemperatureScale.CELSIUS, "kelvin", NotImplementedError, None],
     ],
 )
-def test_convert_fahrenheit_to_celsius(input_temperatures, expected_output):
-    assert convert_fahrenheit_to_celsius(input_temperatures) == expected_output
+def test_convert_temperature_sequences(input_temperatures, input_scale, output_scale, error_type, expected_output):
+    kwargs = {}
+    if input_scale is not None:
+        kwargs["input_scale"] = input_scale
+    if output_scale is not None:
+        kwargs["output_scale"] = output_scale
+
+    if error_type is None:
+        assert convert_temperature_sequences(input_temperatures, **kwargs) == expected_output
+    else:
+        with pytest.raises(error_type):
+            convert_temperature_sequences(input_temperatures, **kwargs)
