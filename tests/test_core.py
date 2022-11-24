@@ -1,7 +1,8 @@
 import pytest
 
-from dummy_lib.core import (TemperatureScale, convert_temperature_sequences,
-                            greet_contributor)
+from dummy_lib.core import convert_temperature_sequences
+from dummy_lib.core import greet_contributor
+from dummy_lib.core import TemperatureScale
 
 
 @pytest.mark.parametrize(
