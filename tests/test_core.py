@@ -1,6 +1,6 @@
 import pytest
 
-from dummy_lib.core import greet_contributor, feature_a
+from dummy_lib.core import greet_contributor, convert_fahrenheit_to_celsius
 
 
 @pytest.mark.parametrize(
@@ -21,5 +21,5 @@ def test_greet_contributor(name, expected_output):
         [[50, 14, 32], [10, -10, 0]],
     ],
 )
-def test_feature_a(input_temperatures, expected_output):
-    assert feature_a(input_temperatures) == expected_output
+def test_convert_fahrenheit_to_celsius(input_temperatures, expected_output):
+    assert convert_fahrenheit_to_celsius(input_temperatures) == expected_output

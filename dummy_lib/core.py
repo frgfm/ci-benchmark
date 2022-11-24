@@ -1,6 +1,6 @@
 from typing import List
 
-__all__ = ["greet_contributor", "feature_a"]
+__all__ = ["greet_contributor", "convert_fahrenheit_to_celsius"]
 
 
 def greet_contributor(name: str) -> str:
@@ -15,7 +15,7 @@ def greet_contributor(name: str) -> str:
 	return f"Hello {name}! Nice to meet you."
 
 
-def feature_a(input_temperatures: List[float]) -> List[float]:
+def convert_fahrenheit_to_celsius(input_temperatures: List[float]) -> List[float]:
 	"""Converts temperatures from Fahrenheit to Celsius.
 
 	Args:
