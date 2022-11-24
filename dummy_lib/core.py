@@ -6,7 +6,8 @@
 from enum import Enum
 from typing import List
 
-__all__ = ["greet_contributor", "convert_temperature_sequences", "TemperatureScale"]
+__all__ = ["greet_contributor",
+           "convert_temperature_sequences", "TemperatureScale"]
 
 
 class TemperatureScale(Enum):

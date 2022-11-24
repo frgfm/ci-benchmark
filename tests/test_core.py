@@ -44,7 +44,8 @@ def test_greet_contributor(name, expected_output):
             [10, -10.0, 0],
         ],
         # Error
-        [[10, -10.0, 0], TemperatureScale.CELSIUS, "kelvin", NotImplementedError, None],
+        [[10, -10.0, 0], TemperatureScale.CELSIUS,
+            "kelvin", NotImplementedError, None],
     ],
 )
 def test_convert_temperature_sequences(input_temperatures, input_scale, output_scale, error_type, expected_output):
@@ -55,7 +56,8 @@ def test_convert_temperature_sequences(input_temperatures, input_scale, output_s
         kwargs["output_scale"] = output_scale
 
     if error_type is None:
-        assert convert_temperature_sequences(input_temperatures, **kwargs) == expected_output
+        assert convert_temperature_sequences(
+            input_temperatures, **kwargs) == expected_output
     else:
         with pytest.raises(error_type):
             convert_temperature_sequences(input_temperatures, **kwargs)
