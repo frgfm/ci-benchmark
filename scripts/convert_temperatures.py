@@ -9,7 +9,6 @@ import argparse
 from dummy_lib import convert_fahrenheit_to_celsius
 
 
-
 def main(args):
 
     # Retrieve a list of floats
@@ -25,7 +24,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Temperature conversion script", formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
-    parser.add_argument("fahrenheits", type=str, help="Comma-separated temparatures in celsius")
+    parser.add_argument("fahrenheits", type=str,
+                        help="Comma-separated temparatures in celsius")
     args = parser.parse_args()
 
     main(args)
