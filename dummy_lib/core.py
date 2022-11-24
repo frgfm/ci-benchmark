@@ -4,7 +4,9 @@
 from enum import Enum
 from typing import List
 
-__all__ = ["greet_contributor", "convert_temperature_sequences", "TemperatureScale"]
+__all__ = [
+    "greet_contributor", "convert_temperature_sequences", "TemperatureScale"
+]
 
 
 class TemperatureScale(Enum):
@@ -45,17 +47,14 @@ def convert_temperature_sequences(
     if input_scale == output_scale:
         return input_temperatures
 
-    if (
-        input_scale == TemperatureScale.FAHRENHEIT
-        and output_scale == TemperatureScale.CELSIUS
-    ):
+    if (input_scale == TemperatureScale.FAHRENHEIT
+            and output_scale == TemperatureScale.CELSIUS):
+        return [(fahrenheit_temp - 32) * 5 / 9
+                for fahrenheit_temp in input_temperatures]
+    elif (input_scale == TemperatureScale.CELSIUS
+          and output_scale == TemperatureScale.FAHRENHEIT):
         return [
-            (fahrenheit_temp - 32) * 5 / 9 for fahrenheit_temp in input_temperatures
+            celsius_temp * 9 / 5 + 32 for celsius_temp in input_temperatures
         ]
-    elif (
-        input_scale == TemperatureScale.CELSIUS
-        and output_scale == TemperatureScale.FAHRENHEIT
-    ):
-        return [celsius_temp * 9 / 5 + 32 for celsius_temp in input_temperatures]
 
     raise NotImplementedError
