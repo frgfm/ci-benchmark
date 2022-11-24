@@ -30,6 +30,4 @@ def convert_fahrenheit_to_celsius(input_temperatures: List[float]) -> List[float
             the temperatures converted to Celsius
     """
 
-    return [
-        (fahrenheit_temp - 32) * 5 / 9 for fahrenheit_temp in input_temperatures
-    ]
+    return [(fahrenheit_temp - 32) * 5 / 9 for fahrenheit_temp in input_temperatures]
