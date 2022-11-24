@@ -11,6 +11,11 @@ from dummy_lib import convert_fahrenheit_to_celsius
 
 
 def main(args):
+    """
+    Main function for the conversion script.
+
+    Args:
+    """
 
     # Retrieve a list of floats
     fahrenheits = list(map(float, args.fahrenheits.split(",")))

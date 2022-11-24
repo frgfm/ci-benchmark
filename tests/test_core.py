@@ -11,6 +11,13 @@ from dummy_lib.core import greet_contributor, convert_fahrenheit_to_celsius
     ],
 )
 def test_greet_contributor(name, expected_output):
+    """
+    Test greet contributor.
+
+    Args:
+        name: write your description
+        expected_output: write your description
+    """
     assert greet_contributor(name) == expected_output
 
 
@@ -22,4 +29,11 @@ def test_greet_contributor(name, expected_output):
     ],
 )
 def test_convert_fahrenheit_to_celsius(input_temperatures, expected_output):
+    """
+    Test that the conversion function can be performed on the given fahrenheit temperatures.
+
+    Args:
+        input_temperatures: write your description
+        expected_output: write your description
+    """
     assert convert_fahrenheit_to_celsius(input_temperatures) == expected_output
