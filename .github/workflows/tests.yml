@@ -51,3 +51,30 @@ jobs:
         with:
           flags: unittests
           fail_ci_if_error: true
+
+  scripts:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python: [3.8]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python }}
+          architecture: x64
+      - name: Cache python modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-python-${{ matrix.python }}-${{ hashFiles('pyproject.toml') }}-test
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e . --upgrade
+      - name: Run script
+        run: python scripts/convert_temperatures.py 14.5,7,32 
