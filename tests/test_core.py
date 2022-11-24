@@ -1,6 +1,6 @@
 import pytest
 
-from dummy_lib.core import greet_contributor, convert_fahrenheit_to_celsius
+from dummy_lib.core import convert_fahrenheit_to_celsius, greet_contributor
 
 
 @pytest.mark.parametrize(
